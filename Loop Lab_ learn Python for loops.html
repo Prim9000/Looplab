@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loop Lab: learn Python for loops</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Serif+4:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--bg:#eef2f6;--surface:#fff;--ink:#14213d;--muted:#51607a;--line:#c9d3e0;--accent:#f2a900;--accent-ink:#14213d;--ok:#13795b;--bad:#b3261e;--code:#101a30;--code-ink:#e8eefc;--hl:#2b3d6b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1424;--surface:#16203a;--ink:#e8eefc;--muted:#9fb0cf;--line:#2a3a5e;--ok:#4fd1a1;--bad:#ff8a80;--code:#0a1020;--hl:#26407a}}
+:root[data-theme="dark"]{--bg:#0d1424;--surface:#16203a;--ink:#e8eefc;--muted:#9fb0cf;--line:#2a3a5e;--ok:#4fd1a1;--bad:#ff8a80;--code:#0a1020;--hl:#26407a}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.65 "Source Serif 4",Georgia,serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.15;margin:0}
+header{padding:56px 0 32px}
+h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-.02em}
+.lede{max-width:56ch;color:var(--muted);margin:16px 0 0}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:1px solid var(--line);z-index:5;font-family:"Bricolage Grotesque",system-ui,sans-serif}
+nav a{color:var(--ink);text-decoration:none;padding:6px 12px;border-radius:99px;white-space:nowrap;font-size:.95rem}
+nav a:hover,nav a:focus-visible{background:var(--accent);color:var(--accent-ink);outline:none}
+section{padding:48px 0 8px}
+h2{font-size:1.9rem;font-weight:700;margin-bottom:12px}
+h3{font-size:1.15rem;margin:24px 0 6px}
+p{margin:0 0 14px;max-width:62ch}
+code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.88em;background:color-mix(in srgb,var(--accent) 22%,transparent);padding:1px 5px;border-radius:4px}
+pre{margin:14px 0;background:var(--code);color:var(--code-ink);border-radius:10px;padding:16px 18px;overflow-x:auto;font:400 .9rem/1.6 "JetBrains Mono",ui-monospace,monospace}
+pre code{background:none;padding:0;font-size:inherit}
+.k{color:#ffcb4d}.s{color:#7fe0b4}.n{color:#8ab4ff}.c{color:#7f8db0;font-style:italic}
+.out{border-left:4px solid var(--ok);background:var(--surface);padding:10px 14px;margin:-6px 0 18px;border-radius:0 8px 8px 0;font:400 .88rem/1.5 "JetBrains Mono",monospace;white-space:pre-wrap}
+.out b{display:block;font:600 .8rem "Bricolage Grotesque",sans-serif;color:var(--ok);margin-bottom:2px}
+.tip{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);padding:12px 16px;border-radius:0 10px 10px 0;margin:16px 0}
+.tip p{margin:0}
+/* visualizer */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
+.ctl{display:flex;flex-wrap:wrap;gap:14px;align-items:end;font-family:"Bricolage Grotesque",sans-serif;font-size:.9rem}
+.ctl label{display:flex;flex-direction:column;gap:3px;color:var(--muted)}
+input,select{font:600 1rem "JetBrains Mono",monospace;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:84px}
+select{width:auto}
+button{font:700 .95rem "Bricolage Grotesque",sans-serif;padding:9px 16px;border-radius:8px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.tape{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0 6px;min-height:52px}
+.cell{min-width:46px;height:46px;display:grid;place-items:center;border:2px solid var(--line);border-radius:8px;font:600 1rem "JetBrains Mono",monospace;color:var(--muted);transition:transform .15s,background .15s}
+.cell.done{color:var(--ink);border-color:var(--ink)}
+.cell.now{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:translateY(-6px)}
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.codebox{background:var(--code);color:var(--code-ink);border-radius:10px;padding:12px 0;font:400 .9rem/1.7 "JetBrains Mono",monospace}
+.ln{padding:0 16px;white-space:pre;border-left:4px solid transparent}
+.ln.on{background:var(--hl);border-left-color:var(--accent)}
+.state{background:var(--bg);border-radius:10px;padding:12px 16px;font:400 .9rem/1.7 "JetBrains Mono",monospace;min-height:120px}
+.state b{color:var(--muted);font:600 .8rem "Bricolage Grotesque",sans-serif;display:block}
+#msg{min-height:1.6em;margin:10px 0 0;font-family:"Bricolage Grotesque",sans-serif;font-size:.95rem;color:var(--muted)}
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
+.q p{font-weight:600}
+.q pre{margin:8px 0}
+.opts{display:grid;gap:8px}
+.opts button{text-align:left;font-family:"JetBrains Mono",monospace;font-weight:400;font-size:.9rem}
+.opts button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,transparent)}
+.opts button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,transparent)}
+.why{margin:10px 0 0;font-size:.95rem;color:var(--muted);display:none}
+#score{font:700 1.1rem "Bricolage Grotesque",sans-serif;margin-top:12px}
+footer{padding:40px 0 0;color:var(--muted);font-size:.95rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Loop Lab</h1>
+  <p class="lede">Welcome. Today’s lesson is iteration: telling Python to repeat work so you don’t have to. Read each section, run the visualizer until the pattern feels obvious, then test yourself with the quiz.</p>
+</header>
+<nav aria-label="Lessons">
+  <a href="#idea">The idea</a><a href="#range">range()</a><a href="#collections">Collections</a><a href="#lab">Visualizer</a><a href="#patterns">Patterns</a><a href="#control">break &amp; continue</a><a href="#nested">Nested</a><a href="#quiz">Quiz</a>
+</nav>
+
+<section id="idea">
+  <h2>The idea</h2>
+  <p>Without a loop, printing five greetings means writing five lines. With a <code>for</code> loop, you write the instruction once and let Python repeat it.</p>
+  <pre><code data-py>for name in ["Ada", "Alan", "Grace"]:
+    print("Hello,", name)</code></pre>
+  <div class="out"><b>Output</b>Hello, Ada
+Hello, Alan
+Hello, Grace</div>
+  <p>Read it as: “for each <code>name</code> in the list, do the indented block.” Each pass through the block is one <em>iteration</em>. Python gives the loop variable the next value every time, so you never update it yourself.</p>
+  <div class="tip"><p><strong>Anatomy.</strong> The line ends with a colon, and the body is indented (four spaces by convention). Indentation is how Python knows what is inside the loop.</p></div>
+</section>
+
+<section id="range">
+  <h2>Counting with range()</h2>
+  <p>When you need numbers, use <code>range()</code>. It takes up to three arguments: <code>range(start, stop, step)</code>. The <strong>stop value is never included</strong>, and <code>start</code> defaults to 0, <code>step</code> to 1.</p>
+  <pre><code data-py>for i in range(5):          # 0, 1, 2, 3, 4
+    print(i)
+
+for i in range(2, 8, 2):    # 2, 4, 6
+    print(i)
+
+for i in range(10, 0, -3):  # 10, 7, 4, 1
+    print(i)</code></pre>
+  <p>A loop that runs <em>n</em> times is <code>range(n)</code>, and it counts from 0. This off-by-one habit is the most common source of student bugs, so check your boundaries every time.</p>
+</section>
+
+<section id="collections">
+  <h2>Looping over collections</h2>
+  <p>You can loop directly over lists, strings, tuples, dictionaries and more. Prefer this over indexing; it is shorter and harder to get wrong.</p>
+  <pre><code data-py>for letter in "code":
+    print(letter)
+
+scores = {"Mia": 91, "Leo": 78}
+for student, score in scores.items():
+    print(student, score)
+
+for i, fruit in enumerate(["apple", "pear"], start=1):
+    print(i, fruit)</code></pre>
+  <div class="out"><b>Output (last loop)</b>1 apple
+2 pear</div>
+  <p>Use <code>enumerate()</code> when you need the position as well as the value, and <code>.items()</code> to get dictionary keys and values together.</p>
+</section>
+
+<section id="lab">
+  <h2>Visualizer: watch a loop run</h2>
+  <p>Set the three <code>range</code> arguments, choose a body, then press <strong>Step</strong> to execute one iteration at a time. The highlighted cell is the current value of <code>i</code>.</p>
+  <div class="lab">
+    <div class="ctl">
+      <label>start<input id="a" type="number" value="1"></label>
+      <label>stop<input id="b" type="number" value="6"></label>
+      <label>step<input id="s" type="number" value="1"></label>
+      <label>body<select id="body">
+        <option value="print">print(i)</option>
+        <option value="sq">print(i * i)</option>
+        <option value="sum">total += i</option>
+      </select></label>
+      <button class="primary" id="step">Step</button>
+      <button id="run">Run all</button>
+      <button id="reset">Reset</button>
+    </div>
+    <div class="tape" id="tape" aria-live="polite"></div>
+    <div class="grid2">
+      <div class="codebox" id="code" aria-label="Code being executed"></div>
+      <div class="state"><b>Variables</b><div id="vars"></div><b style="margin-top:10px">Output</b><div id="vout"></div></div>
+    </div>
+    <p id="msg"></p>
+  </div>
+  <div class="tip"><p><strong>Try this.</strong> Set stop to 1 and see what happens. Then try step <code>-1</code> with start 5 and stop 0.</p></div>
+</section>
+
+<section id="patterns">
+  <h2>Pattern: the accumulator</h2>
+  <p>Most loops build something up. Start with a neutral value before the loop, then update it inside.</p>
+  <pre><code data-py>total = 0
+for price in [4.5, 3.0, 12.25]:
+    total += price
+print("Total:", total)
+
+evens = []
+for n in range(1, 11):
+    if n % 2 == 0:
+        evens.append(n)
+print(evens)</code></pre>
+  <div class="out"><b>Output</b>Total: 19.75
+[2, 4, 6, 8, 10]</div>
+  <p>The initial value matters: <code>0</code> for sums, <code>1</code> for products, <code>[]</code> for lists, <code>""</code> for strings. Define it <em>before</em> the loop, or it will reset on every pass.</p>
+</section>
+
+<section id="control">
+  <h2>Steering a loop: break and continue</h2>
+  <p><code>break</code> exits the loop immediately. <code>continue</code> skips the rest of the current iteration and moves to the next one.</p>
+  <pre><code data-py>for n in range(1, 10):
+    if n == 3:
+        continue      # skip 3
+    if n == 6:
+        break         # stop at 6
+    print(n)</code></pre>
+  <div class="out"><b>Output</b>1
+2
+4
+5</div>
+  <p>Python also has a <code>for … else</code>: the <code>else</code> block runs only if the loop finished without hitting <code>break</code>. It is handy for searches.</p>
+</section>
+
+<section id="nested">
+  <h2>Nested loops</h2>
+  <p>A loop inside a loop runs its full cycle for every iteration of the outer one. With 3 rows and 4 columns, the inner body executes 3 × 4 = 12 times.</p>
+  <pre><code data-py>for row in range(1, 4):
+    line = ""
+    for col in range(1, 5):
+        line += str(row * col) + " "
+    print(line)</code></pre>
+  <div class="out"><b>Output</b>1 2 3 4 
+2 4 6 8 
+3 6 9 12 </div>
+  <h3>Common mistakes</h3>
+  <p>Expecting <code>range(5)</code> to include 5. Changing a list while looping over it. Forgetting the colon. Putting the accumulator’s starting value inside the loop. Writing <code>for i in len(items)</code> instead of <code>range(len(items))</code>.</p>
+</section>
+
+<section id="quiz">
+  <h2>Check your understanding</h2>
+  <div id="quizbox"></div>
+  <div id="score"></div>
+  <button id="again" style="margin-top:10px">Restart quiz</button>
+</section>
+
+<footer>Keep practising: rewrite each example from memory, then change one thing and predict the output before you run it.</footer>
+</div>
+
+<script>
+// tiny highlighter for static code blocks
+function hl(src){
+  return src.replace(/&/g,"&amp;").replace(/</g,"&lt;")
+   .replace(/(#.*$)|("[^"]*")|\b(for|in|if|else|break|continue|range|print|enumerate)\b|\b(\d+\.?\d*)\b/gm,
+    (m,c,s,k,n)=>c?'<span class="c">'+c+'</span>':s?'<span class="s">'+s+'</span>':k?'<span class="k">'+k+'</span>':'<span class="n">'+n+'</span>');
+}
+document.querySelectorAll("code[data-py]").forEach(e=>e.innerHTML=hl(e.textContent));
+
+// visualizer
+const $=id=>document.getElementById(id);
+let vals=[],idx=-1,total=0,outs=[];
+function build(){
+  const a=+$("a").value,b=+$("b").value,s=+$("s").value;
+  vals=[];idx=-1;total=0;outs=[];
+  if(s===0){$("msg").textContent="A step of 0 would loop forever, so Python raises a ValueError. Choose a non-zero step.";}
+  else{
+    for(let i=a;s>0?i<b:i>b;i+=s){vals.push(i);if(vals.length>=24)break;}
+    $("msg").textContent=vals.length?"Press Step to run the first iteration.":"This range is empty, so the loop body never runs.";
+  }
+  draw();
+}
+function draw(){
+  const a=$("a").value,b=$("b").value,s=$("s").value,k=$("body").value;
+  const lines=[];
+  if(k==="sum")lines.push("total = 0");
+  lines.push("for i in range("+a+", "+b+", "+s+"):");
+  lines.push("    "+({print:"print(i)",sq:"print(i * i)",sum:"total += i"})[k]);
+  if(k==="sum")lines.push("print(total)");
+  const forL=k==="sum"?1:0,bodyL=forL+1,active=idx>=0&&idx<vals.length?[forL,bodyL]:(idx>=vals.length&&vals.length?[lines.length-1]:[]);
+  $("code").innerHTML=lines.map((t,i)=>'<div class="ln'+(active.includes(i)?' on':'')+'">'+hl(t)+'</div>').join("");
+  $("tape").innerHTML=vals.length?vals.map((v,i)=>'<div class="cell'+(i<idx?' done':'')+(i===idx?' now':'')+'">'+v+'</div>').join(""):'<span style="color:var(--muted);font-family:sans-serif">No values</span>';
+  $("vars").innerHTML="i = "+(idx>=0&&idx<vals.length?vals[idx]:"—")+(k==="sum"?"<br>total = "+total:"");
+  $("vout").textContent=outs.join("\n")||"—";
+}
+function step(){
+  if(!vals.length||idx>=vals.length)return false;
+  idx++;
+  if(idx<vals.length){
+    const i=vals[idx],k=$("body").value;
+    if(k==="print")outs.push(i);
+    else if(k==="sq")outs.push(i*i);
+    else total+=i;
+    $("msg").textContent="Iteration "+(idx+1)+" of "+vals.length+": i is now "+i+".";
+  }else{
+    if($("body").value==="sum")outs.push(total);
+    $("msg").textContent="No values left, so the loop ends and Python moves on.";
+  }
+  draw();return true;
+}
+$("step").onclick=step;
+$("run").onclick=()=>{while(step());};
+$("reset").onclick=build;
+["a","b","s","body"].forEach(id=>$(id).addEventListener("change",build));
+build();
+
+// quiz
+const Q=[
+ {q:"How many times does this loop run?",c:"for i in range(3, 8):\n    print(i)",o:["4","5","6","8"],a:1,w:"range(3, 8) gives 3, 4, 5, 6, 7. The stop value is excluded, so that is 5 iterations."},
+ {q:"What does this print?",c:"for i in range(10, 0, -4):\n    print(i)",o:["10 6 2","10 6 2 -2","9 5 1","10 7 4 1"],a:0,w:"Starting at 10 and stepping by -4 gives 10, 6, 2. The next value, -2, would pass the stop of 0."},
+ {q:"What is the value of total at the end?",c:"total = 0\nfor n in [2, 4, 6]:\n    total += n",o:["6","12","0","[2, 4, 6]"],a:1,w:"The accumulator adds each item: 0 + 2 + 4 + 6 = 12."},
+ {q:"What does this print?",c:"for n in range(1, 6):\n    if n == 2:\n        continue\n    if n == 4:\n        break\n    print(n)",o:["1 3","1 2 3","1 3 4","3"],a:0,w:"continue skips 2, then break stops the loop at 4 before it prints. Only 1 and 3 are printed."},
+ {q:"How many times does the inner print run?",c:"for r in range(3):\n    for c in range(2):\n        print(r, c)",o:["3","5","6","2"],a:2,w:"The inner loop runs 2 times for each of the 3 outer iterations: 3 × 2 = 6."}
+];
+let done=0,right=0;
+function renderQuiz(){
+  done=0;right=0;$("score").textContent="";
+  $("quizbox").innerHTML=Q.map((x,qi)=>'<div class="q"><p>'+(qi+1)+'. '+x.q+'</p><pre><code>'+hl(x.c)+'</code></pre><div class="opts">'+x.o.map((t,oi)=>'<button data-q="'+qi+'" data-o="'+oi+'">'+t+'</button>').join("")+'</div><p class="why" id="why'+qi+'">'+x.w+'</p></div>').join("");
+  document.querySelectorAll(".opts button").forEach(btn=>btn.onclick=()=>{
+    const qi=+btn.dataset.q,oi=+btn.dataset.o,x=Q[qi],bs=btn.parentNode.querySelectorAll("button");
+    if(btn.parentNode.dataset.d)return;btn.parentNode.dataset.d=1;
+    bs[x.a].classList.add("right");if(oi!==x.a)btn.classList.add("wrong");else right++;
+    $("why"+qi).style.display="block";done++;
+    if(done===Q.length)$("score").textContent="Score: "+right+" / "+Q.length+(right===Q.length?". Excellent work, you’ve got loops.":". Review the explanations and try again.");
+  });
+}
+$("again").onclick=renderQuiz;renderQuiz();
+</script>
+</body>
+</html>
