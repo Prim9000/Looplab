@@ -3,287 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Loop Lab: learn Python for loops</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Serif+4:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<title>Python Value Assignment: the “total” box</title>
 <style>
-:root{--bg:#eef2f6;--surface:#fff;--ink:#14213d;--muted:#51607a;--line:#c9d3e0;--accent:#f2a900;--accent-ink:#14213d;--ok:#13795b;--bad:#b3261e;--code:#101a30;--code-ink:#e8eefc;--hl:#2b3d6b;
+:root{--bg:#f7f6f2;--card:#fff;--text:#1d1d1b;--muted:#66655f;--line:#dcdad2;--accent:#2f6fed;--green:#1f9d55;--red:#d93f3f;--code:#f0efe9;--box:#e8f0ff;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1424;--surface:#16203a;--ink:#e8eefc;--muted:#9fb0cf;--line:#2a3a5e;--ok:#4fd1a1;--bad:#ff8a80;--code:#0a1020;--hl:#26407a}}
-:root[data-theme="dark"]{--bg:#0d1424;--surface:#16203a;--ink:#e8eefc;--muted:#9fb0cf;--line:#2a3a5e;--ok:#4fd1a1;--bad:#ff8a80;--code:#0a1020;--hl:#26407a}
-html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--card:#222428;--text:#eeeeea;--muted:#a1a19a;--line:#383b41;--accent:#6b9bff;--green:#46c27c;--red:#ff7070;--code:#2b2d32;--box:#1f2c4a}}
+:root[data-theme="dark"]{--bg:#17181b;--card:#222428;--text:#eeeeea;--muted:#a1a19a;--line:#383b41;--accent:#6b9bff;--green:#46c27c;--red:#ff7070;--code:#2b2d32;--box:#1f2c4a}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.65 "Source Serif 4",Georgia,serif}
-.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
-h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.15;margin:0}
-header{padding:56px 0 32px}
-h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-.02em}
-.lede{max-width:56ch;color:var(--muted);margin:16px 0 0}
-nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:1px solid var(--line);z-index:5;font-family:"Bricolage Grotesque",system-ui,sans-serif}
-nav a{color:var(--ink);text-decoration:none;padding:6px 12px;border-radius:99px;white-space:nowrap;font-size:.95rem}
-nav a:hover,nav a:focus-visible{background:var(--accent);color:var(--accent-ink);outline:none}
-section{padding:48px 0 8px}
-h2{font-size:1.9rem;font-weight:700;margin-bottom:12px}
-h3{font-size:1.15rem;margin:24px 0 6px}
-p{margin:0 0 14px;max-width:62ch}
-code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.88em;background:color-mix(in srgb,var(--accent) 22%,transparent);padding:1px 5px;border-radius:4px}
-pre{margin:14px 0;background:var(--code);color:var(--code-ink);border-radius:10px;padding:16px 18px;overflow-x:auto;font:400 .9rem/1.6 "JetBrains Mono",ui-monospace,monospace}
-pre code{background:none;padding:0;font-size:inherit}
-.k{color:#ffcb4d}.s{color:#7fe0b4}.n{color:#8ab4ff}.c{color:#7f8db0;font-style:italic}
-.out{border-left:4px solid var(--ok);background:var(--surface);padding:10px 14px;margin:-6px 0 18px;border-radius:0 8px 8px 0;font:400 .88rem/1.5 "JetBrains Mono",monospace;white-space:pre-wrap}
-.out b{display:block;font:600 .8rem "Bricolage Grotesque",sans-serif;color:var(--ok);margin-bottom:2px}
-.tip{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);padding:12px 16px;border-radius:0 10px 10px 0;margin:16px 0}
-.tip p{margin:0}
-/* visualizer */
-.lab{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
-.ctl{display:flex;flex-wrap:wrap;gap:14px;align-items:end;font-family:"Bricolage Grotesque",sans-serif;font-size:.9rem}
-.ctl label{display:flex;flex-direction:column;gap:3px;color:var(--muted)}
-input,select{font:600 1rem "JetBrains Mono",monospace;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:84px}
-select{width:auto}
-button{font:700 .95rem "Bricolage Grotesque",sans-serif;padding:9px 16px;border-radius:8px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
-button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.tape{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0 6px;min-height:52px}
-.cell{min-width:46px;height:46px;display:grid;place-items:center;border:2px solid var(--line);border-radius:8px;font:600 1rem "JetBrains Mono",monospace;color:var(--muted);transition:transform .15s,background .15s}
-.cell.done{color:var(--ink);border-color:var(--ink)}
-.cell.now{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:translateY(-6px)}
-.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
-@media(max-width:640px){.grid2{grid-template-columns:1fr}}
-.codebox{background:var(--code);color:var(--code-ink);border-radius:10px;padding:12px 0;font:400 .9rem/1.7 "JetBrains Mono",monospace}
-.ln{padding:0 16px;white-space:pre;border-left:4px solid transparent}
-.ln.on{background:var(--hl);border-left-color:var(--accent)}
-.state{background:var(--bg);border-radius:10px;padding:12px 16px;font:400 .9rem/1.7 "JetBrains Mono",monospace;min-height:120px}
-.state b{color:var(--muted);font:600 .8rem "Bricolage Grotesque",sans-serif;display:block}
-#msg{min-height:1.6em;margin:10px 0 0;font-family:"Bricolage Grotesque",sans-serif;font-size:.95rem;color:var(--muted)}
-/* quiz */
-.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
-.q p{font-weight:600}
-.q pre{margin:8px 0}
-.opts{display:grid;gap:8px}
-.opts button{text-align:left;font-family:"JetBrains Mono",monospace;font-weight:400;font-size:.9rem}
-.opts button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,transparent)}
-.opts button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,transparent)}
-.why{margin:10px 0 0;font-size:.95rem;color:var(--muted);display:none}
-#score{font:700 1.1rem "Bricolage Grotesque",sans-serif;margin-top:12px}
-footer{padding:40px 0 0;color:var(--muted);font-size:.95rem}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.6rem;margin:0 0 4px}
+h2{font-size:1.1rem;margin:0 0 10px}
+p.sub{color:var(--muted);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+code,.code{font-family:ui-monospace,Menlo,Consolas,monospace}
+.lines{background:var(--code);border-radius:10px;padding:8px 0}
+.line{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.05rem;padding:6px 14px;border-left:4px solid transparent;color:var(--muted)}
+.line.done{color:var(--text)}
+.line.cur{background:rgba(47,111,237,.15);border-left-color:var(--accent);color:var(--text);font-weight:600}
+.op{color:#a63fd1}.num{color:var(--green)}
+.boxwrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.name{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:1.2rem}
+.box{width:170px;min-height:110px;border:3px solid var(--accent);background:var(--box);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;transition:transform .25s}
+.box.pop{transform:scale(1.08)}
+.val{font-size:2.6rem;font-weight:700;font-family:ui-monospace,Menlo,Consolas,monospace}
+.empty{color:var(--muted);font-size:1rem}
+.old{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--red);text-decoration:line-through;font-size:1rem}
+.hist{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:24px}
+.expl{border-left:4px solid var(--accent);padding:6px 12px;margin-top:12px;background:var(--code);border-radius:0 8px 8px 0}
+.expl b.r{color:var(--accent)}
+button{font:inherit;padding:9px 16px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+button.p{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+button:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+input{font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--text);min-width:0;width:170px}
+.msg{margin-top:10px;min-height:1.5em}
+.err{color:var(--red)}
+.rule{background:var(--code);border-radius:10px;padding:10px 14px;margin:0}
+.box{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.box.drag{cursor:grabbing;box-shadow:0 10px 24px rgba(0,0,0,.28);position:relative;z-index:5;transition:none}
+.box.over{outline:3px dashed var(--green);outline-offset:3px}
+.chip{font-family:ui-monospace,Menlo,Consolas,monospace;padding:7px 12px;border:2px solid var(--green);border-radius:9px;background:var(--card);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.ghost{position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:99;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.tip{color:var(--muted);font-size:.9rem}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <h1>Loop Lab</h1>
-  <p class="lede">Welcome. Today’s lesson is iteration: telling Python to repeat work so you don’t have to. Read each section, run the visualizer until the pattern feels obvious, then test yourself with the quiz.</p>
-</header>
-<nav aria-label="Lessons">
-  <a href="#idea">The idea</a><a href="#range">range()</a><a href="#collections">Collections</a><a href="#lab">Visualizer</a><a href="#patterns">Patterns</a><a href="#control">break &amp; continue</a><a href="#nested">Nested</a><a href="#quiz">Quiz</a>
-</nav>
+<main>
+<h1>Python value assignment</h1>
+<p class="sub">A variable is a named box. The <code>=</code> sign doesn’t mean “equals”: it means “put this value into the box”.</p>
 
-<section id="idea">
-  <h2>The idea</h2>
-  <p>Without a loop, printing five greetings means writing five lines. With a <code>for</code> loop, you write the instruction once and let Python repeat it.</p>
-  <pre><code data-py>for name in ["Ada", "Alan", "Grace"]:
-    print("Hello,", name)</code></pre>
-  <div class="out"><b>Output</b>Hello, Ada
-Hello, Alan
-Hello, Grace</div>
-  <p>Read it as: “for each <code>name</code> in the list, do the indented block.” Each pass through the block is one <em>iteration</em>. Python gives the loop variable the next value every time, so you never update it yourself.</p>
-  <div class="tip"><p><strong>Anatomy.</strong> The line ends with a colon, and the body is indented (four spaces by convention). Indentation is how Python knows what is inside the loop.</p></div>
-</section>
-
-<section id="range">
-  <h2>Counting with range()</h2>
-  <p>When you need numbers, use <code>range()</code>. It takes up to three arguments: <code>range(start, stop, step)</code>. The <strong>stop value is never included</strong>, and <code>start</code> defaults to 0, <code>step</code> to 1.</p>
-  <pre><code data-py>for i in range(5):          # 0, 1, 2, 3, 4
-    print(i)
-
-for i in range(2, 8, 2):    # 2, 4, 6
-    print(i)
-
-for i in range(10, 0, -3):  # 10, 7, 4, 1
-    print(i)</code></pre>
-  <p>A loop that runs <em>n</em> times is <code>range(n)</code>, and it counts from 0. This off-by-one habit is the most common source of student bugs, so check your boundaries every time.</p>
-</section>
-
-<section id="collections">
-  <h2>Looping over collections</h2>
-  <p>You can loop directly over lists, strings, tuples, dictionaries and more. Prefer this over indexing; it is shorter and harder to get wrong.</p>
-  <pre><code data-py>for letter in "code":
-    print(letter)
-
-scores = {"Mia": 91, "Leo": 78}
-for student, score in scores.items():
-    print(student, score)
-
-for i, fruit in enumerate(["apple", "pear"], start=1):
-    print(i, fruit)</code></pre>
-  <div class="out"><b>Output (last loop)</b>1 apple
-2 pear</div>
-  <p>Use <code>enumerate()</code> when you need the position as well as the value, and <code>.items()</code> to get dictionary keys and values together.</p>
-</section>
-
-<section id="lab">
-  <h2>Visualizer: watch a loop run</h2>
-  <p>Set the three <code>range</code> arguments, choose a body, then press <strong>Step</strong> to execute one iteration at a time. The highlighted cell is the current value of <code>i</code>.</p>
-  <div class="lab">
-    <div class="ctl">
-      <label>start<input id="a" type="number" value="1"></label>
-      <label>stop<input id="b" type="number" value="6"></label>
-      <label>step<input id="s" type="number" value="1"></label>
-      <label>body<select id="body">
-        <option value="print">print(i)</option>
-        <option value="sq">print(i * i)</option>
-        <option value="sum">total += i</option>
-      </select></label>
-      <button class="primary" id="step">Step</button>
-      <button id="run">Run all</button>
-      <button id="reset">Reset</button>
-    </div>
-    <div class="tape" id="tape" aria-live="polite"></div>
-    <div class="grid2">
-      <div class="codebox" id="code" aria-label="Code being executed"></div>
-      <div class="state"><b>Variables</b><div id="vars"></div><b style="margin-top:10px">Output</b><div id="vout"></div></div>
-    </div>
-    <p id="msg"></p>
-  </div>
-  <div class="tip"><p><strong>Try this.</strong> Set stop to 1 and see what happens. Then try step <code>-1</code> with start 5 and stop 0.</p></div>
-</section>
-
-<section id="patterns">
-  <h2>Pattern: the accumulator</h2>
-  <p>Most loops build something up. Start with a neutral value before the loop, then update it inside.</p>
-  <pre><code data-py>total = 0
-for price in [4.5, 3.0, 12.25]:
-    total += price
-print("Total:", total)
-
-evens = []
-for n in range(1, 11):
-    if n % 2 == 0:
-        evens.append(n)
-print(evens)</code></pre>
-  <div class="out"><b>Output</b>Total: 19.75
-[2, 4, 6, 8, 10]</div>
-  <p>The initial value matters: <code>0</code> for sums, <code>1</code> for products, <code>[]</code> for lists, <code>""</code> for strings. Define it <em>before</em> the loop, or it will reset on every pass.</p>
-</section>
-
-<section id="control">
-  <h2>Steering a loop: break and continue</h2>
-  <p><code>break</code> exits the loop immediately. <code>continue</code> skips the rest of the current iteration and moves to the next one.</p>
-  <pre><code data-py>for n in range(1, 10):
-    if n == 3:
-        continue      # skip 3
-    if n == 6:
-        break         # stop at 6
-    print(n)</code></pre>
-  <div class="out"><b>Output</b>1
-2
-4
-5</div>
-  <p>Python also has a <code>for … else</code>: the <code>else</code> block runs only if the loop finished without hitting <code>break</code>. It is handy for searches.</p>
-</section>
-
-<section id="nested">
-  <h2>Nested loops</h2>
-  <p>A loop inside a loop runs its full cycle for every iteration of the outer one. With 3 rows and 4 columns, the inner body executes 3 × 4 = 12 times.</p>
-  <pre><code data-py>for row in range(1, 4):
-    line = ""
-    for col in range(1, 5):
-        line += str(row * col) + " "
-    print(line)</code></pre>
-  <div class="out"><b>Output</b>1 2 3 4 
-2 4 6 8 
-3 6 9 12 </div>
-  <h3>Common mistakes</h3>
-  <p>Expecting <code>range(5)</code> to include 5. Changing a list while looping over it. Forgetting the colon. Putting the accumulator’s starting value inside the loop. Writing <code>for i in len(items)</code> instead of <code>range(len(items))</code>.</p>
-</section>
-
-<section id="quiz">
-  <h2>Check your understanding</h2>
-  <div id="quizbox"></div>
-  <div id="score"></div>
-  <button id="again" style="margin-top:10px">Restart quiz</button>
-</section>
-
-<footer>Keep practising: rewrite each example from memory, then change one thing and predict the output before you run it.</footer>
+<div class="card">
+<h2>The rule</h2>
+<p class="rule code">variable_name <span class="op">=</span> value &nbsp;&larr;&nbsp; right side is worked out first, then stored on the left</p>
 </div>
 
+<div class="card">
+<h2>1. Step through the code</h2>
+<div class="grid">
+<div>
+<div class="lines" id="lines"></div>
+<div class="row">
+<button class="p" id="next">Next step ▶</button>
+<button id="reset">Reset</button>
+</div>
+<div class="row" id="tray1" style="min-height:46px"></div>
+</div>
+<div class="boxwrap">
+<div class="name">total</div>
+<div class="box" id="box"><span class="empty" id="val">(empty)</span></div>
+<div class="hist" id="hist"></div>
+</div>
+</div>
+<div class="expl" id="expl">Press <b>Next step</b> to run the first line.</div>
+</div>
+
+<div class="card">
+<h2>2. Try it yourself</h2>
+<div class="code">total = <input id="expr" value="total + 5" aria-label="expression" autocomplete="off" spellcheck="false"></div>
+<div class="row">
+<span class="tip">Drag your expression into the box &rarr;</span><span class="chip" id="dragexpr"></span>
+<button id="clr">Empty the box</button>
+</div>
+<div class="row" id="tray"><span class="tip">Drag a value onto the box:</span>
+<span class="chip" data-e="0">0</span><span class="chip" data-e="5">5</span><span class="chip" data-e="10">10</span><span class="chip" data-e="total + 1">total + 1</span><span class="chip" data-e="total * 2">total * 2</span></div>
+<div class="tip" style="margin-top:6px">You can also grab any box and move it around.</div>
+<div class="boxwrap" style="margin-top:16px">
+<div class="name">total</div>
+<div class="box" id="box2"><span class="empty" id="val2">(empty)</span></div>
+<div class="hist" id="hist2"></div>
+</div>
+<div class="msg" id="msg">Try <code>10</code>, then <code>total + 5</code>, then <code>total * 2</code>.</div>
+</div>
+
+<div class="card">
+<h2>Remember</h2>
+<p style="margin:0">In <code>total = total + 1</code>, Python first reads the <em>old</em> value of total (0), computes 0 + 1 = 1, then throws away the old value and stores 1. The box only ever holds one value.</p>
+</div>
+</main>
 <script>
-// tiny highlighter for static code blocks
-function hl(src){
-  return src.replace(/&/g,"&amp;").replace(/</g,"&lt;")
-   .replace(/(#.*$)|("[^"]*")|\b(for|in|if|else|break|continue|range|print|enumerate)\b|\b(\d+\.?\d*)\b/gm,
-    (m,c,s,k,n)=>c?'<span class="c">'+c+'</span>':s?'<span class="s">'+s+'</span>':k?'<span class="k">'+k+'</span>':'<span class="n">'+n+'</span>');
-}
-document.querySelectorAll("code[data-py]").forEach(e=>e.innerHTML=hl(e.textContent));
-
-// visualizer
-const $=id=>document.getElementById(id);
-let vals=[],idx=-1,total=0,outs=[];
-function build(){
-  const a=+$("a").value,b=+$("b").value,s=+$("s").value;
-  vals=[];idx=-1;total=0;outs=[];
-  if(s===0){$("msg").textContent="A step of 0 would loop forever, so Python raises a ValueError. Choose a non-zero step.";}
-  else{
-    for(let i=a;s>0?i<b:i>b;i+=s){vals.push(i);if(vals.length>=24)break;}
-    $("msg").textContent=vals.length?"Press Step to run the first iteration.":"This range is empty, so the loop body never runs.";
-  }
-  draw();
-}
-function draw(){
-  const a=$("a").value,b=$("b").value,s=$("s").value,k=$("body").value;
-  const lines=[];
-  if(k==="sum")lines.push("total = 0");
-  lines.push("for i in range("+a+", "+b+", "+s+"):");
-  lines.push("    "+({print:"print(i)",sq:"print(i * i)",sum:"total += i"})[k]);
-  if(k==="sum")lines.push("print(total)");
-  const forL=k==="sum"?1:0,bodyL=forL+1,active=idx>=0&&idx<vals.length?[forL,bodyL]:(idx>=vals.length&&vals.length?[lines.length-1]:[]);
-  $("code").innerHTML=lines.map((t,i)=>'<div class="ln'+(active.includes(i)?' on':'')+'">'+hl(t)+'</div>').join("");
-  $("tape").innerHTML=vals.length?vals.map((v,i)=>'<div class="cell'+(i<idx?' done':'')+(i===idx?' now':'')+'">'+v+'</div>').join(""):'<span style="color:var(--muted);font-family:sans-serif">No values</span>';
-  $("vars").innerHTML="i = "+(idx>=0&&idx<vals.length?vals[idx]:"—")+(k==="sum"?"<br>total = "+total:"");
-  $("vout").textContent=outs.join("\n")||"—";
-}
-function step(){
-  if(!vals.length||idx>=vals.length)return false;
-  idx++;
-  if(idx<vals.length){
-    const i=vals[idx],k=$("body").value;
-    if(k==="print")outs.push(i);
-    else if(k==="sq")outs.push(i*i);
-    else total+=i;
-    $("msg").textContent="Iteration "+(idx+1)+" of "+vals.length+": i is now "+i+".";
-  }else{
-    if($("body").value==="sum")outs.push(total);
-    $("msg").textContent="No values left, so the loop ends and Python moves on.";
-  }
-  draw();return true;
-}
-$("step").onclick=step;
-$("run").onclick=()=>{while(step());};
-$("reset").onclick=build;
-["a","b","s","body"].forEach(id=>$(id).addEventListener("change",build));
-build();
-
-// quiz
-const Q=[
- {q:"How many times does this loop run?",c:"for i in range(3, 8):\n    print(i)",o:["4","5","6","8"],a:1,w:"range(3, 8) gives 3, 4, 5, 6, 7. The stop value is excluded, so that is 5 iterations."},
- {q:"What does this print?",c:"for i in range(10, 0, -4):\n    print(i)",o:["10 6 2","10 6 2 -2","9 5 1","10 7 4 1"],a:0,w:"Starting at 10 and stepping by -4 gives 10, 6, 2. The next value, -2, would pass the stop of 0."},
- {q:"What is the value of total at the end?",c:"total = 0\nfor n in [2, 4, 6]:\n    total += n",o:["6","12","0","[2, 4, 6]"],a:1,w:"The accumulator adds each item: 0 + 2 + 4 + 6 = 12."},
- {q:"What does this print?",c:"for n in range(1, 6):\n    if n == 2:\n        continue\n    if n == 4:\n        break\n    print(n)",o:["1 3","1 2 3","1 3 4","3"],a:0,w:"continue skips 2, then break stops the loop at 4 before it prints. Only 1 and 3 are printed."},
- {q:"How many times does the inner print run?",c:"for r in range(3):\n    for c in range(2):\n        print(r, c)",o:["3","5","6","2"],a:2,w:"The inner loop runs 2 times for each of the 3 outer iterations: 3 × 2 = 6."}
-];
-let done=0,right=0;
-function renderQuiz(){
-  done=0;right=0;$("score").textContent="";
-  $("quizbox").innerHTML=Q.map((x,qi)=>'<div class="q"><p>'+(qi+1)+'. '+x.q+'</p><pre><code>'+hl(x.c)+'</code></pre><div class="opts">'+x.o.map((t,oi)=>'<button data-q="'+qi+'" data-o="'+oi+'">'+t+'</button>').join("")+'</div><p class="why" id="why'+qi+'">'+x.w+'</p></div>').join("");
-  document.querySelectorAll(".opts button").forEach(btn=>btn.onclick=()=>{
-    const qi=+btn.dataset.q,oi=+btn.dataset.o,x=Q[qi],bs=btn.parentNode.querySelectorAll("button");
-    if(btn.parentNode.dataset.d)return;btn.parentNode.dataset.d=1;
-    bs[x.a].classList.add("right");if(oi!==x.a)btn.classList.add("wrong");else right++;
-    $("why"+qi).style.display="block";done++;
-    if(done===Q.length)$("score").textContent="Score: "+right+" / "+Q.length+(right===Q.length?". Excellent work, you’ve got loops.":". Review the explanations and try again.");
-  });
-}
-$("again").onclick=renderQuiz;renderQuiz();
+var steps=[
+{code:'total = 0',expr:'0',txt:'Right side is just 0. Store it in the box named total.'},
+{code:'total = total + 1',expr:'total + 1'},
+{code:'total = total + 2',expr:'total + 2'},
+{code:'total = total + 3',expr:'total + 3'},
+{code:'total = total + 4',expr:'total + 4'}];
+var total=null,hist=[],i=0;
+function fmt(c){return c.replace('=','<span class="op">=</span>').replace('+','<span class="op">+</span>').replace(/\b(\d+)\b/g,'<span class="num">$1</span>')}
+function ev(e){
+ if(!/^[0-9total+\-*\/() .%]+$/.test(e))throw new Error('Use only numbers, total and + - * / ( )');
+ if(/[a-z]/.test(e.replace(/total/g,'')))throw new Error('Only the variable total is known here');
+ if(total===null&&/total/.test(e))throw new Error('NameError: total has no value yet. Assign a number first.');
+ var r=Function('total','return ('+e+')')(total);
+ if(typeof r!=='number'||!isFinite(r))throw new Error('That does not give a number');
+ return Math.round(r*1e6)/1e6}
+function put(valId,boxId,histId,v,old){
+ var b=document.getElementById(boxId);
+ document.getElementById(valId).outerHTML='<span class="val" id="'+valId+'">'+v+'</span>';
+ b.classList.add('pop');setTimeout(function(){b.classList.remove('pop')},250);
+ document.getElementById(histId).innerHTML=old.map(function(o){return '<span class="old">'+o+'</span>'}).join('')}
+function render(){
+ var L=document.getElementById('lines');
+ L.innerHTML=steps.map(function(s,k){return '<div class="line '+(k<i-1?'done':k===i-1?'cur':'')+'">'+fmt(s.code)+'</div>'}).join('');
+ document.getElementById('next').disabled=i>=steps.length}
+var pending=false;
+function bindChip(c,target,cb){
+ c.addEventListener('pointerdown',function(e){
+  var g=c.cloneNode(true);g.classList.add('ghost');document.body.appendChild(g);
+  c.setPointerCapture(e.pointerId);
+  function mv(ev){g.style.left=ev.clientX+'px';g.style.top=ev.clientY+'px';
+   var r=target.getBoundingClientRect();
+   target.classList.toggle('over',ev.clientX>r.left&&ev.clientX<r.right&&ev.clientY>r.top&&ev.clientY<r.bottom)}
+  function up(){c.removeEventListener('pointermove',mv);c.removeEventListener('pointerup',up);c.removeEventListener('pointercancel',up);
+   g.remove();var over=target.classList.contains('over');target.classList.remove('over');if(over)cb()}
+  mv(e);c.addEventListener('pointermove',mv);c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)})}
+document.getElementById('next').onclick=function(){
+ if(i>=steps.length||pending)return;
+ var s=steps[i],v=ev(s.expr);pending=true;
+ document.getElementById('next').disabled=true;
+ var c=document.createElement('span');c.className='chip';
+ c.innerHTML='<b>'+v+'</b>'+(total===null?'':' <span class="tip">('+total+' + '+s.expr.split('+')[1].trim()+')</span>');
+ var t=document.getElementById('tray1');t.innerHTML='';t.appendChild(c);
+ var h=document.createElement('span');h.className='tip';h.textContent='\u2190 drag this value into the box';t.appendChild(h);
+ bindChip(c,document.getElementById('box'),commit);
+ document.getElementById('expl').innerHTML=total===null?'<b class="r">\u2460 Right side:</b> just <b>0</b>. Now drag it into the box named total.':'<b class="r">\u2460 Right side first:</b> '+total+' + '+s.expr.split('+')[1].trim()+' = <b>'+v+'</b>. Now drag the value into the box.';
+};
+function commit(){
+ var s=steps[i],old=total,v=ev(s.expr);
+ pending=false;document.getElementById('tray1').innerHTML='';
+ if(old!==null)hist.push(old);
+ total=v;i++;
+ put('val','box','hist',v,hist);
+ document.getElementById('expl').innerHTML=old===null?s.txt:
+  '<b class="r">① Right side first:</b> total + '+s.expr.split('+')[1].trim()+' &rarr; '+old+' + '+s.expr.split('+')[1].trim()+' = <b>'+v+'</b><br><b class="r">② Then assign:</b> the old value <span class="old">'+old+'</span> is replaced. total is now <b>'+v+'</b>.'+(i===steps.length?'<br>Final answer: 1 + 2 + 3 + 4 = <b>10</b>.':'');
+ render()};
+document.getElementById('reset').onclick=function(){
+ total=null;hist=[];i=0;pending=false;document.getElementById('tray1').innerHTML='';
+ document.getElementById('val').outerHTML='<span class="empty" id="val">(empty)</span>';
+ document.getElementById('hist').innerHTML='';
+ document.getElementById('expl').innerHTML='Press <b>Next step</b> to run the first line.';render()};
+var t2=null,h2=[],m=document.getElementById('msg');
+function run(){
+ var e=document.getElementById('expr').value.trim(),keep=total;
+ try{
+  total=t2;var v=ev(e);total=keep;
+  if(t2!==null)h2.push(t2);
+  var old=t2;t2=v;put('val2','box2','hist2',v,h2);
+  m.className='msg';
+  m.innerHTML=old===null?'total = '+e+' &rarr; stored <b>'+v+'</b>.':'Python computed '+e.replace(/total/g,old)+' = <b>'+v+'</b>, then replaced the old value <span class="old">'+old+'</span>.';
+ }catch(x){total=keep;m.className='msg err';m.textContent=x.message}}
+var ex=document.getElementById('expr'),de=document.getElementById('dragexpr');
+function sync(){de.textContent=ex.value.trim()||'?'}ex.oninput=sync;sync();
+document.getElementById('clr').onclick=function(){t2=null;h2=[];
+ document.getElementById('val2').outerHTML='<span class="empty" id="val2">(empty)</span>';
+ document.getElementById('hist2').innerHTML='';m.className='msg';m.textContent='Box emptied.'};
+function dragBox(b){var sx,sy,ox=0,oy=0,on=false;
+ b.addEventListener('pointerdown',function(e){on=true;sx=e.clientX-ox;sy=e.clientY-oy;b.setPointerCapture(e.pointerId);b.classList.add('drag')});
+ b.addEventListener('pointermove',function(e){if(!on)return;ox=e.clientX-sx;oy=e.clientY-sy;b.style.translate=ox+'px '+oy+'px'});
+ function end(){on=false;b.classList.remove('drag')}
+ b.addEventListener('pointerup',end);b.addEventListener('pointercancel',end)}
+dragBox(document.getElementById('box'));dragBox(document.getElementById('box2'));
+document.querySelectorAll('.chip').forEach(function(c){
+ c.addEventListener('pointerdown',function(e){
+  var g=c.cloneNode(true);g.classList.add('ghost');document.body.appendChild(g);
+  c.setPointerCapture(e.pointerId);
+  var b2=document.getElementById('box2');
+  function mv(ev){g.style.left=ev.clientX+'px';g.style.top=ev.clientY+'px';
+   var r=b2.getBoundingClientRect();
+   b2.classList.toggle('over',ev.clientX>r.left&&ev.clientX<r.right&&ev.clientY>r.top&&ev.clientY<r.bottom)}
+  function up(){c.removeEventListener('pointermove',mv);c.removeEventListener('pointerup',up);c.removeEventListener('pointercancel',up);
+   g.remove();var over=b2.classList.contains('over');b2.classList.remove('over');
+   if(over){if(c.dataset.e){document.getElementById('expr').value=c.dataset.e;document.getElementById('expr').dispatchEvent(new Event('input'))}run()}}
+  mv(e);c.addEventListener('pointermove',mv);c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)})});
+render();
 </script>
 </body>
 </html>
